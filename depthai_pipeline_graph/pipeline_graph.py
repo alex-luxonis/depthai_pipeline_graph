@@ -130,7 +130,10 @@ def main():
             command = "python -m trace -t ".split() + command
             pipeline_create_re = f'.*:\s*(.*)\s*=\s*{args.pipeline_name}\.create.*'
             node_name = []
-        process = subprocess.Popen(command, shell=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        fn = None
+        if os.name != 'nt':
+            fn = os.setsid
+        process = subprocess.Popen(command, shell=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, preexec_fn=fn)
 
         schema_str = None
         record_output = "" # Save the output and print it in case something went wrong
@@ -151,6 +154,8 @@ def main():
                 else:
                     print("Terminating program...")
                     process.terminate()
+                    if 1:  # FIXME workaround for main apps that use `multiprocessing`
+                        os.killpg(os.getpgid(process.pid), signal.SIGTERM)
             elif args.use_variable_names:
                 match = re.match(pipeline_create_re, line)
                 if match:
