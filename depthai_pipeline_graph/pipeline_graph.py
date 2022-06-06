@@ -39,7 +39,8 @@ def main():
         "EdgeDetector": (248,196,113), 
         "FeatureTracker": (248,196,113), 
         "ObjectTracker": (248,196,113), 
-        "IMU": (248,196,113)
+        "IMU": (248,196,113),
+        "VideoEncoder": (192,192,192), # TODO choose better color
     }
 
 
