@@ -146,7 +146,9 @@ def main():
                 schema_str = match.group(1)
                 print("Pipeline schema retrieved")
                 # print(schema_str)
-                if not args.do_not_kill:
+                if args.do_not_kill:
+                    break
+                else:
                     print("Terminating program...")
                     process.terminate()
             elif args.use_variable_names:
